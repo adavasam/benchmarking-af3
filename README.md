@@ -1,6 +1,12 @@
 # benchmarking-af3
 This repository contains the code used for our paper titled "Benchmarking AlphaFold3 for structure-based ligand discovery"
 
+## DUDEz and LTS
+The `DUDEz` and `LTS` folers contain example templates to run Alphafold3.
+
+## logAUC_calculation
+The `logAUC_calculation` folder contains pipeline to calculate logAUC.
+
 ## Out-of-sample Analysis
 
 ### Installation
@@ -28,4 +34,5 @@ In the `2_analysis` folder, there's:
 - `8_run_dockrmsd.sh`: runs the DockRMSD executable and saves a txt file containing the ligand RMSD between the AF3 and reference structure.
 - `9_save_metrics.py`: saves all metrics into a CSV file.
 
-## DUDEz
+## Perspective
+The `perspective` folder contains example to run Boltz prediction and experimental data correlation calculation.
