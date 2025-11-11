@@ -8,7 +8,13 @@ The following software is needed before running our analyses:
 
 The BioLip2 database will also need to be downloaded: https://zhanggroup.org/BioLiP
 
-This repository currently contains code to perform the out-of-sample analysis. The `out_of_sample` folder contains two subfolders: `1_preparation` and `2_analysis`. 
+This repository currently contains code to perform the out-of-sample analysis. The `out_of_sample` folder contains two subfolders: `1_preparation` and `2_analysis`. All scripts in these folders use the same conda/mamba environment as the toolkit for the [AI-driven Structure-enabled Antiviral Platform (ASAP)](https://asapdiscovery.readthedocs.io/). After installing conda or mamba, the following lines of code can be run to set up your environment:
+```
+mamba create -n af3-benchmarking python=3.10
+mamba activate af3-benchmarking
+mamba install -c conda-forge asapdiscovery
+mamba install -c openeye openeye-toolkits
+```
 
 In the `1_preparation` folder, there's:
 - `0_DatasetConstruction.ipynb`: this notebook can be used to process data downloaded from RCSB and cross-reference with the BioLip2 database. A CSV file can be created containing information about the protein-ligand complex with the necessary information for AlphaFold3, including but not limited to the receptor sequence and ligand SMILES.
