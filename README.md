@@ -1,5 +1,8 @@
-# benchmarking-af3
-This repository contains the code used for our paper titled "Benchmarking AlphaFold3 for structure-based ligand discovery"
+# Benchmarking AlphaFold3 for structure-based ligand discovery
+
+This repository contains the code and workflow used in our paper, **“Benchmarking AlphaFold3 for structure-based ligand discovery.”**
+
+# Overview
 
 ## DUDEz and LTS
 The `DUDEz` and `LTS` folers contain example templates to run Alphafold3.
@@ -7,32 +10,159 @@ The `DUDEz` and `LTS` folers contain example templates to run Alphafold3.
 ## Enrichment analysis
 The `logAUC_calculation` folder contains pipeline to calculate enrichment metrics like logAUC.
 
-## Out-of-sample Analysis
+## AF3 Structure Prediction on Out-of-Sample Data
 
-### Installation
+### 🧰 Requirements
 
-The following software is needed before running our analyses:
-- APoc (Alignment of Pockets): https://sites.gatech.edu/cssb/apoc
-- DockRMSD (Ligand RMSD): https://aideepmed.com/DockRMSD
-- Biopython (Python package): https://biopython.org
+Before running the analyses, install the following software and dependencies:
 
-The BioLip2 database will also need to be downloaded: https://zhanggroup.org/BioLiP
+| Software | Description | Link |
+|-----------|--------------|------|
+| **AlphaFold3** | Protein structure prediction | [github.com/google-deepmind/alphafold3](https://github.com/google-deepmind/alphafold3) |
+| **APoc** | Alignment of protein pockets | [sites.gatech.edu/cssb/apoc](https://sites.gatech.edu/cssb/apoc) |
+| **DockRMSD** | Ligand RMSD computation | [aideepmed.com/DockRMSD](https://aideepmed.com/DockRMSD) |
 
-The `out_of_sample` folder contains two subfolders: `1_preparation` and `2_analysis`. 
+You will also need to download the **BioLip2** database: 🔗 [https://zhanggroup.org/BioLiP](https://zhanggroup.org/BioLiP)
 
-In the `1_preparation` folder, there's:
-- `0_DatasetConstruction.ipynb`: this notebook can be used to process data downloaded from RCSB and cross-reference with the BioLip2 database. A CSV file can be created containing information about the protein-ligand complex with the necessary information for AlphaFold3, including but not limited to the receptor sequence and ligand SMILES.
-- `1_create_json_inputs.py`: script that takes in a CSV and generates AF3 JSON inputs into a folder.
 
-In the `2_analysis` folder, there's:
-- `2_copy_biolip_files.py`: copies the necessary experimental protein and ligand structures from the BioLiP database into the corresponding AF3 output directory.
-- `3_find_pocket_residues.py`: performs a binding pocket residue search 5Å around the experimental ligand, and then performs a mapping to the AF3 mmcif file to obtain the corresponding pocket residues.
-- `4_add_pocket.sh`: appends the user-defined pocket selection into a new pdb containing both the full structure and the added pocket. This file serves as an input to perform APoc.
-- `5_run_apoc.sh`: runs the APoc executable in every AF3 output directory and saves a txt file.
-- `6_coord_transform.sh`: uses the transformation coordinates generated from APoc and aligns the experimental and predicted structures (pocket-aligned). References the align_structures.py file.
-- `7_save_mol2_array.sh`: creates and saves ligand mol2's, to be used for ligand RMSD calculations. This script has been parallelized to perform multiple operations at once. References the extract_ligand.py file.
-- `8_run_dockrmsd.sh`: runs the DockRMSD executable and saves a txt file containing the ligand RMSD between the AF3 and reference structure.
-- `9_save_metrics.py`: saves all metrics into a CSV file.
+### ⚙️ Environment Setup
+
+Install [conda](https://docs.conda.io/en/latest/) or [mamba](https://mamba.readthedocs.io/en/latest/) before proceeding.
+
+This work uses the same environment from [AI-driven Structure-enabled Antiviral Platform (ASAP)](https://asapdiscovery.readthedocs.io/), 
+and leverages [Biopython](https://biopython.org) (Python bioinformatics toolkit) for reproducible benchmarking.
+
+Run the following commands to create and configure the environment:
+```bash
+mamba create -n af3-benchmarking python=3.10
+mamba activate af3-benchmarking
+mamba install -c conda-forge asapdiscovery
+mamba install -c openeye openeye-toolkits
+```
+
+
+### 📂 Directory Structure
+
+```
+out_of_sample/
+├── 1_preparation/
+│   ├── 0_DatasetConstruction.ipynb
+│   └── 1_create_json_inputs.py
+└── 2_analysis/
+    ├── 2_copy_biolip_files.py
+    ├── 3_find_pocket_residues.py
+    ├── 4_add_pocket.sh
+    ├── 5_run_apoc.sh
+    ├── 6_coord_transform.sh
+    ├── 7_save_mol2_array.sh
+    ├── 8_run_dockrmsd.sh
+    └── 9_save_metrics.py
+```
+
+
+### 📝 Workflow and Script Descriptions
+
+#### 1️⃣ Preparation
+
+##### `0_DatasetConstruction.ipynb`
+Processes data downloaded from [RCSB](https://www.rcsb.org/) and cross-references with the BioLip2 database.  
+Saves a CSV file containing information for each protein–ligand complex, including receptor sequence and ligand SMILES strings.
+
+##### `1_create_json_inputs.py`
+Generates AlphaFold3 JSON input files from a CSV. Outputs are saved in the `af_input` folder.
+
+**Usage:**
+```bash
+python 1_create_json_inputs.py -c af3_inputs.csv
+```
+
+
+#### 2️⃣ Analysis
+
+> All scripts in this folder should be placed in the same directory as your AF3 output folder, renamed to `finished_outputs`.
+
+##### `2_copy_biolip_files.py`
+Copies the corresponding experimental protein and ligand structures from BioLip into the `finished_outputs` directory.
+
+- Update the hardcoded paths to your BioLip directories before running.
+
+**Usage:**
+```bash
+python 2_copy_biolip_files.py
+```
+
+##### `3_find_pocket_residues.py`
+Identifies binding pocket residues within 5 Å of the experimental ligand and maps them to the AF3 predicted structure.
+
+**Usage:**
+```bash
+python 3_find_pocket_residues.py
+```
+
+##### `4_add_pocket.sh`
+Appends user-defined pocket selections to create a combined PDB file (used as APoc input).
+
+**Usage:**
+```bash
+./4_add_pocket.sh
+```
+
+##### `5_run_apoc.sh`
+Runs the **APoc** executable for all AF3 outputs and generates alignment reports.
+
+**Usage:**
+```bash
+./5_run_apoc.sh
+```
+
+##### `6_coord_transform.sh`
+Applies transformation matrices from APoc to align predicted and experimental structures (pocket-aligned). References `align_structures.py`.
+
+**Usage:**
+```bash
+./6_coord_transform.sh
+```
+
+##### `7_save_mol2_array.sh`
+Extracts and saves ligand `.mol2` files for RMSD computation. References `extract_ligand.py`.
+
+**Usage:**
+```bash
+./7_save_mol2_array.sh
+```
+
+##### `8_run_dockrmsd.sh`
+Runs **DockRMSD** to calculate ligand RMSD between predicted and reference structures.
+
+**Usage:**
+```bash
+./8_run_dockrmsd.sh
+```
+
+##### `9_save_metrics.py`
+Aggregates all computed metrics into a summary CSV file.
+
+**Usage:**
+```bash
+python 9_save_metrics.py
+```
+
+### 📊 Output
+
+The final results include:
+- Pocket-aligned protein-ligand structures 
+- A summary CSV of all performance metrics
 
 ## Perspective
 The `perspective` folder contains example to run Boltz prediction and experimental data correlation calculation.
+
+# Citation
+
+If you use this code or workflow in your research, please cite our paper:
+
+> *Title*  
+> *Authors*  
+> *Journal / Year*
+
+
+## Acknowledgements
