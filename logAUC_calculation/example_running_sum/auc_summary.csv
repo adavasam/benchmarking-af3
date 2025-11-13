@@ -1,0 +1,4 @@
+metric,recp_name,auc,log_auc,n_ligands,n_decoys,source_file,recp_path
+docking_score,S2,77.28,11.14,133,373,roc_own.txt,docking_score/S2
+docking_score,D4,70.8,7.26,119,429,roc_own.txt,docking_score/D4
+docking_score,AMPC,76.36,14.59,292,1229,roc_own.txt,docking_score/AMPC

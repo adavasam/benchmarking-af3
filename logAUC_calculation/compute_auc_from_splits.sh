@@ -1,6 +1,16 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Ensure `conda activate` works in non-interactive shells by initializing
+# conda for this script. This mirrors what `conda init` would do for an
+# interactive shell but is safe to run in batch scripts.
+if command -v conda >/dev/null 2>&1; then
+  # Prefer the shell hook (conda >= 4.6). If that fails, fall back to
+  # sourcing the profile.d script from the conda base prefix.
+  eval "$(conda shell.bash hook 2>/dev/null)" || \
+    source "$(conda info --base 2>/dev/null)/etc/profile.d/conda.sh" || true
+fi
+
 JOBS=1
 DRYRUN=0
 
@@ -13,8 +23,17 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-CONVERT_PY="convert.py"
-RUNR_SH="runr.py"
+# Resolve helper script paths relative to this script's location so the
+# helpers are found even if the user runs this script from a different
+# current working directory.
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+CONVERT_PY="$SCRIPT_DIR/convert.py"
+RUNR_SH="$SCRIPT_DIR/runr.py"
+
+if [[ -z "${DOCKBASE:-}" ]]; then
+  echo "[ERROR] \$DOCKBASE is not set." >&2
+  exit 2
+fi
 
 for f in "$CONVERT_PY" "$RUNR_SH"; do
   [[ -f "$f" ]] || { echo "[ERROR] Missing required file: $f" >&2; exit 2; }
@@ -46,8 +65,8 @@ process_one_dir() {
     else
       echo "  Would rank ascending:  (cd $recp_dir && conda activate dock37_py27 && conda activate py3d && python $CONVERT_PY split.csv && conda deactivate)"
     fi
-    echo "  Would AUC/logAUC: (cd $recp_dir && python ./logAUC_calculation/dockbase_files -i . -l ./ligands.name -d ./decoys.name)"
-    echo "                     (cd $recp_dir && python ./logAUC_calculation/plots.py  -i . -l ./ligands.name -d ./decoys.name)"
+    echo "  Would AUC/logAUC: (cd $recp_dir && python "$DOCKBASE/analysis/enrich.py" -i . -l ./ligands.name -d ./decoys.name)"
+    echo "                     (cd $recp_dir && python "$DOCKBASE/analysis/plots.py"  -i . -l ./ligands.name -d ./decoys.name)"
     return 0
   fi
 
@@ -57,8 +76,8 @@ process_one_dir() {
     ( cd "$recp_dir" && conda activate dock37_py27 && conda activate py3d && python "$CONVERT_PY" "split.csv" && conda deactivate )
   fi
 
-  ( cd "$recp_dir" && conda activate dock37_py27 && python ./logAUC_calculation/dockbase_files -i . -l ./ligands.name -d ./decoys.name )
-  ( cd "$recp_dir" && conda activate dock37_py27 && python ./logAUC_calculation/plots.py  -i . -l ./ligands.name -d ./decoys.name )
+  ( cd "$recp_dir" && conda activate dock37_py27 && python "$DOCKBASE/analysis/enrich.py" -i . -l ./ligands.name -d ./decoys.name )
+  ( cd "$recp_dir" && conda activate dock37_py27 && python "$DOCKBASE/analysis/plots.py" -i . -l ./ligands.name -d ./decoys.name )
 }
 
 export CONVERT_PY RUNR_SH DRYRUN

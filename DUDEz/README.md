@@ -3,7 +3,8 @@
 ## Run Alphafold3
 
 You can run Alphafold3 via command 
-```
+
+```bash
 python run_alphafold.py \
    --input_dir=/root/af_inputs \
    --model_dir=/root/models \
