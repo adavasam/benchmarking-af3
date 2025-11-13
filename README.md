@@ -2,15 +2,13 @@
 
 This repository contains the code and workflow used in our paper, **“Benchmarking AlphaFold3 for structure-based ligand discovery.”**
 
+# Overview
 
-## Overview
+## DUDEz and LTS
+The `DUDEz` and `LTS` folers contain example templates to run Alphafold3.
 
-The repository is organized in the following manner:
-
-- [TODO]
-- **`out_of_sample/1_preparation`** — Notebook and script for dataset construction and input generation.
-- **`out_of_sample/2_analysis`** — Scripts for structural analysis, pocket alignment, and RMSD benchmarking.
-
+## Enrichment analysis
+The `logAUC_calculation` folder contains pipeline to calculate enrichment metrics like logAUC.
 
 ## AF3 Structure Prediction on Out-of-Sample Data
 
@@ -155,9 +153,10 @@ The final results include:
 - Pocket-aligned protein-ligand structures 
 - A summary CSV of all performance metrics
 
----
+## Perspective
+The `perspective` folder contains example to run Boltz prediction and experimental data correlation calculation.
 
-## Citation
+# Citation
 
 If you use this code or workflow in your research, please cite our paper:
 
@@ -167,5 +166,3 @@ If you use this code or workflow in your research, please cite our paper:
 
 
 ## Acknowledgements
-
-[TODO]
