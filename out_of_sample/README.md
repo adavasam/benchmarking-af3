@@ -8,22 +8,25 @@ Before running the analyses, install the following software and dependencies:
 | **APoc** | Alignment of protein pockets | [sites.gatech.edu/cssb/apoc](https://sites.gatech.edu/cssb/apoc) |
 | **DockRMSD** | Ligand RMSD computation | [aideepmed.com/DockRMSD](https://aideepmed.com/DockRMSD) |
 
-You will also need to download the **BioLip2** database: 🔗 [https://zhanggroup.org/BioLiP](https://zhanggroup.org/BioLiP)
+You will also need to download the **BioLiP2** database: 🔗 [https://zhanggroup.org/BioLiP](https://zhanggroup.org/BioLiP). 
+
+Instructions for downloading this database using the provided Perl script are available [here](https://aideepmed.com/BioLiP/weekly.html). Note that the script retrieves both the _redundant_ and _non-redundant_ datasets, where the non-redundant set is “a subset of the redundant dataset by protein sequence clustering at 90% sequence identity” ([BioLiP website](https://aideepmed.com/BioLiP/weekly.html)). For our dataset curation, we use the full redundant dataset. Because the Perl script downloads both versions, we remove the non-redundant protein and ligand directories after download, then rename the remaining directories to `protein` and `ligand` within the automatically generated `BioLiP_updated_set` folder.
+
+Although this workflow provides an end-to-end process for dataset curation and initial benchmarking, we are unable to distribute the full dataset in this repository. Instead, we include demo CSV files and sample experimental structures organized to mirror the BioLiP directory structure.
 
 
 ### ⚙️ Environment Setup
 
 Install [conda](https://docs.conda.io/en/latest/) or [mamba](https://mamba.readthedocs.io/en/latest/) before proceeding.
 
-This work uses the same environment from [AI-driven Structure-enabled Antiviral Platform (ASAP)](https://asapdiscovery.readthedocs.io/), 
-and leverages [Biopython](https://biopython.org) (Python bioinformatics toolkit) for reproducible benchmarking.
+This work leverages [Biopython](https://biopython.org), which is an open-source Python bioinformatics toolkit.
 
 Run the following commands to create and configure the environment:
 ```bash
-mamba create -n af3-benchmarking python=3.10
-mamba activate af3-benchmarking
-mamba install -c conda-forge asapdiscovery
-mamba install -c openeye openeye-toolkits
+conda create -n af3-benchmarking python=3.10
+conda activate af3-benchmarking
+conda install -c conda-forge biopython
+conda install pandas
 ```
 
 
