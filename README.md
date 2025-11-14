@@ -2,23 +2,22 @@
 
 This repository contains the code and workflow used in our paper, **“Benchmarking AlphaFold3 for structure-based ligand discovery.”**
 
-# Overview
+## Overview
+[TODO]
 
 ## DUDEz and LTS
 The `DUDEz` and `LTS` folers contain example templates to run Alphafold3.
 
-## Enrichment analysis
+## Enrichment Analysis
 The `enrichment` folder contains pipeline to calculate enrichment metrics like logAUC.
 
-## Structure Prediction on Out-of-Sample Data
-
+## Out-of-Sample Structure Predictions
 The `out_of_sample` folder contains the workflow used to curate a dataset for structure prediction and then calculate relevant metrics.
 
 ## Prospective
 The `prospective` folder contains example to run Boltz prediction and experimental data correlation calculation.
 
-# Citation
-
+## Citing This Work
 If you use this code or workflow in your research, please cite our paper:
 
 > *Title*  
