@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-BASE_DIR="finished_outputs"
+BASE_DIR="${1:-finished_outputs}"
 
 for SUBDIR in "$BASE_DIR"/*/; do
 	[ -d "$SUBDIR" ] || continue

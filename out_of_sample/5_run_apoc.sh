@@ -1,6 +1,7 @@
 #!/bin/bash
 
-BASE_DIR="finished_outputs"
+BASE_DIR="${1:-finished_outputs}"
+APOC_BIN="/path/to/apoc/executable"
 
 for SUBDIR in "$BASE_DIR"/*/; do
 	[ -d "$SUBDIR" ] || continue
@@ -11,7 +12,7 @@ for SUBDIR in "$BASE_DIR"/*/; do
 	fi
 
 	apoc_output="${SUBDIR}apoc_output.txt"
-	/lustre/fs6/lyu_lab/scratch/dbarcelos/Apoc/apoc/bin/apoc "${SUBDIR}ref_complex_pocket_added.pdb" "${SUBDIR}af3_model_pocket_added.pdb" -fa 0 -plen 5 > "$apoc_output"
+	${APOC_BIN} "${SUBDIR}ref_complex_pocket_added.pdb" "${SUBDIR}af3_model_pocket_added.pdb" -fa 0 -plen 5 > "$apoc_output"
 
 done
 echo "Done"

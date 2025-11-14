@@ -1,7 +1,7 @@
 #!/bin/bash
 
-BASE_DIR="finished_outputs"
-DOCKRMSD_BIN="/lustre/fs6/lyu_lab/scratch/kmenon01/software/bin/DockRMSD"
+BASE_DIR="${1:-finished_outputs}"
+DOCKRMSD_BIN="/path/to/dockrmsd/executable"
 
 for SUBDIR in "$BASE_DIR"/*/; do
     [ -d "$SUBDIR" ] || continue

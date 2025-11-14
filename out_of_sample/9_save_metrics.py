@@ -60,7 +60,7 @@ def saveall():
             data_to_append.append(metrics_dict)
 
     all_results_df = pd.DataFrame(data_to_append, columns=column_names)
-    all_results_df.to_csv('all_metrics_new.csv', index=False)
+    all_results_df.to_csv('all_metrics.csv', index=False)
 
 def main():
     for sub in sorted(os.listdir(BASE_DIR)):
