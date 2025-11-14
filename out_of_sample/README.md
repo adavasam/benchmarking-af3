@@ -4,7 +4,7 @@ Before running the analyses, install the following software and dependencies:
 
 | Software | Description | Link |
 |-----------|--------------|------|
-| **AlphaFold3** | Protein structure prediction | [github.com/google-deepmind/alphafold3](https://github.com/google-deepmind/alphafold3) |
+| **AlphaFold3** | Structure prediction | [github.com/google-deepmind/alphafold3](https://github.com/google-deepmind/alphafold3) |
 | **APoc** | Alignment of protein pockets | [sites.gatech.edu/cssb/apoc](https://sites.gatech.edu/cssb/apoc) |
 | **DockRMSD** | Ligand RMSD computation | [aideepmed.com/DockRMSD](https://aideepmed.com/DockRMSD) |
 
@@ -19,13 +19,13 @@ Although this workflow provides an end-to-end process for dataset curation and i
 
 Install [conda](https://docs.conda.io/en/latest/) or [mamba](https://mamba.readthedocs.io/en/latest/) before proceeding.
 
-This work leverages [Biopython](https://biopython.org), which is an open-source Python bioinformatics toolkit.
+This work mainly leverages [Biopython](https://biopython.org/) (an open-source bioinformatics toolkit) and [RDKit](https://www.rdkit.org/) (an open-source cheminformatics toolkit).
 
 Run the following commands to create and configure the environment:
 ```bash
 conda create -n af3-benchmarking python=3.10
 conda activate af3-benchmarking
-conda install -c conda-forge biopython
+conda install -c conda-forge biopython rdkit
 conda install pandas
 ```
 
