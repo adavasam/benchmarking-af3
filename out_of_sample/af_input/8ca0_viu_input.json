@@ -1,0 +1,26 @@
+{
+  "name": "8ca0_viu",
+  "sequences": [
+    {
+      "protein": {
+        "id": "A",
+        "sequence": "PMFIVNTNVPRASVPDGFLSELTQQLAQATGKPPQYIAVHVVPDQLMAFGGSSEPCALCSLHSIGKIGGAQNRSYSKLLCGLLAERLRISPDRVYINYYDMNAANVGWNNSTFA"
+      }
+    },
+    {
+      "ligand": {
+        "id": "B",
+        "smiles": "CCc1cc(cc2c1N=C3C(=CC(=CC3=S2)N4CCCC4)C)N5CCCC5"
+      }
+    }
+  ],
+  "modelSeeds": [
+    4,
+    9,
+    8,
+    31,
+    20
+  ],
+  "dialect": "alphafold3",
+  "version": 1
+}

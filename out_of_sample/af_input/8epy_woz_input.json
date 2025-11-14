@@ -1,0 +1,26 @@
+{
+  "name": "8epy_woz",
+  "sequences": [
+    {
+      "protein": {
+        "id": "A",
+        "sequence": "GSHMSHDAVRPAPGEPTWVDLLTPDRGAALQFYSALFGWEFSTTSDGTSPYTMCRLRGREVCSIGDLGENPGPALGGWSSYLSVDDADAAAAAVPELGGAVLLGPIDILAQGRMLLAGDPSGHRVGLWQAKEHTGSGPDDGIGAYTRSELLTGASATDGAFYRGLFGADFATESGTDGGGRRAAIRQVGPAAPSGWYPCFRAQESAVPAAVMLGASVLLRYDCPDGPAVVVSAPGGEVFTLLLTD"
+      }
+    },
+    {
+      "ligand": {
+        "id": "B",
+        "smiles": "Cc1cc(cc2c1C3c4c(cc5c(c4O)C(=O)c6c(cc(cc6O)O)C5(C)C)CC(O2)(O3)C)O"
+      }
+    }
+  ],
+  "modelSeeds": [
+    4,
+    9,
+    8,
+    31,
+    20
+  ],
+  "dialect": "alphafold3",
+  "version": 1
+}
